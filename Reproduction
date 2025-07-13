@@ -1,0 +1,54 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Values to plot
+values = np.array([1.0786, 0.9999, 1.2189, 1.0229, 1.0446])
+
+# Define the lower and upper bounds for the confidence intervals
+lower_bounds = np.array([1.0785, 0.9964, 0.8173, 0.8159, 0.8103])
+upper_bounds = np.array([1.0787, 1.0033, 1.6846, 1.2734, 1.2790])
+
+# Calculate the errors (upper - value and value - lower)
+lower_error = values - lower_bounds
+upper_error = upper_bounds - values
+
+# Define x-axis labels (method names)
+method_names = ['EG', 'ML', 'SB', 'TD', 'Gamma-D GT']
+
+# Define colors for each data point
+colors = ['k', 'g', 'b', 'r', 'm']
+
+# Set figure size
+plt.figure(figsize=(6, 4))
+
+# Plot the values with error bars
+for i in range(len(values)):
+    legend_label = f'{values[i]:.4f} ({lower_bounds[i]:.4f}, {upper_bounds[i]:.4f})'
+    plt.errorbar(x=method_names[i], y=values[i], yerr=[[lower_error[i]], [upper_error[i]]],
+                 fmt='o', color=colors[i], capsize=5, label=legend_label)
+
+# Add a horizontal reference line at R₀ = 1
+plt.axhline(y=1, color='red', linestyle='--', linewidth=1.5, alpha=0.8, label='$R_0 = 1$')
+
+# Add labels
+plt.ylabel('$R_0$ with 95% CI', fontsize=14)
+
+# Customize x-axis labels
+plt.xticks(method_names, rotation=0, ha='right', fontsize=12)
+
+# Add a legend with a box
+legend = plt.legend(loc='upper left', fontsize=10, frameon=True)
+legend.get_frame().set_edgecolor('black')  # Add border color to legend box
+legend.get_frame().set_linewidth(2)  # Make legend box border thicker
+
+# Add a grid
+plt.grid(True, linestyle='--', alpha=1)
+
+# Add a box around the figure
+ax = plt.gca()  # Get current axis
+for spine in ax.spines.values():
+    spine.set_linewidth(2)  # Adjust border thickness
+
+# Adjust layout and show the plot
+plt.tight_layout()
+plt.show()
