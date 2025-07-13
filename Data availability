@@ -1,0 +1,50 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from datetime import datetime, timedelta
+
+# Daily new cases data
+daily_cases = [
+    291, 275, 253, 226, 226, 165, 166, 241, 249, 210, 173, 159, 114, 152, 200, 162, 167, 176, 135, 112,
+    131, 185, 163, 201, 227, 196, 157, 188, 268, 243, 226, 265, 173, 134, 175, 188, 228, 214, 163, 170,
+    121, 171, 197, 174, 179, 104, 114, 79, 138, 134, 145, 131, 140, 94, 89, 102, 132, 99, 93, 109, 80,
+    65, 111, 128, 99, 128, 113, 91, 89, 96, 109, 114, 132, 124, 79, 77, 102, 126, 156, 117, 142, 120,
+    95, 125, 193, 169, 180, 218, 185, 169, 240, 268, 283, 334, 324, 281, 266, 326, 379, 440, 456, 524,
+    444, 402, 618, 754, 796, 843, 1071, 918, 646, 1134, 1300, 1249, 1590, 1890, 1805, 1573, 2151, 3016,
+    3094, 2995, 3824, 3641, 3038, 4435, 5335, 6050, 6155, 5357, 5880, 5676, 7830, 10158, 11109, 10753,
+    10093, 9111, 7633, 10542, 12591, 11692, 12193, 10112, 6904, 6934, 9629, 9355, 7533, 7171, 5874, 4282,
+    3325, 3720, 3962, 3611, 2961, 2380, 1839, 1331, 2109, 1690, 1580, 1223, 1272, 801, 656, 1021, 906,
+    865, 782, 756, 473, 405, 552, 535, 490, 425, 403, 310, 224, 310, 288, 267, 237, 202, 174, 124, 214,
+    199, 169, 186, 140, 92, 80, 120, 106, 96, 108, 90, 63, 36, 92, 95, 51, 55, 80, 47, 33, 65, 47, 44
+]
+
+# Time vector (days)
+time_days = np.arange(1, len(daily_cases) + 1)
+
+# Generate a list of dates starting from a specific date
+start_date = datetime(2022, 12, 1)  # Start date (adjust as necessary)
+dates = [start_date + timedelta(days=i) for i in range(len(daily_cases))]
+
+# Plotting the rectangular connecting curve style (step plot) with circle markers
+plt.figure(figsize=(6, 4))
+plt.step(time_days, daily_cases, where='mid', color='blue', linewidth=1.5)
+plt.plot(time_days, daily_cases, 'bo', markersize=4, label="Cases")  # Circle markers at each point
+
+# Adding labels and title
+plt.xlabel('Date',fontsize=14)
+plt.ylabel('New daily cases',fontsize=14)
+#plt.title('New Daily Cases with Rectangular and Circle Markers')
+
+# Formatting x-axis with date labels
+plt.xticks(time_days[::10], [dates[i].strftime('%b %d') for i in range(0, len(dates), 10)], rotation=45)
+
+# Add a box around the figure
+ax = plt.gca()  # Get current axis
+for spine in ax.spines.values():
+    spine.set_linewidth(2)  # Adjust border thickness
+
+# Display the plot
+plt.grid(True)
+plt.tight_layout()  # Ensure proper layout
+plt.legend()
+plt.show()
