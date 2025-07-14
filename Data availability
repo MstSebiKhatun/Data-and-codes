@@ -17,34 +17,19 @@ daily_cases = [
     865, 782, 756, 473, 405, 552, 535, 490, 425, 403, 310, 224, 310, 288, 267, 237, 202, 174, 124, 214,
     199, 169, 186, 140, 92, 80, 120, 106, 96, 108, 90, 63, 36, 92, 95, 51, 55, 80, 47, 33, 65, 47, 44
 ]
-
-# Time vector (days)
 time_days = np.arange(1, len(daily_cases) + 1)
-
-# Generate a list of dates starting from a specific date
 start_date = datetime(2022, 12, 1)  # Start date (adjust as necessary)
 dates = [start_date + timedelta(days=i) for i in range(len(daily_cases))]
-
-# Plotting the rectangular connecting curve style (step plot) with circle markers
 plt.figure(figsize=(6, 4))
 plt.step(time_days, daily_cases, where='mid', color='blue', linewidth=1.5)
 plt.plot(time_days, daily_cases, 'bo', markersize=4, label="Cases")  # Circle markers at each point
-
-# Adding labels and title
 plt.xlabel('Date',fontsize=14)
 plt.ylabel('New daily cases',fontsize=14)
-#plt.title('New Daily Cases with Rectangular and Circle Markers')
-
-# Formatting x-axis with date labels
 plt.xticks(time_days[::10], [dates[i].strftime('%b %d') for i in range(0, len(dates), 10)], rotation=45)
-
-# Add a box around the figure
 ax = plt.gca()  # Get current axis
 for spine in ax.spines.values():
     spine.set_linewidth(2)  # Adjust border thickness
-
-# Display the plot
 plt.grid(True)
-plt.tight_layout()  # Ensure proper layout
+plt.tight_layout()  
 plt.legend()
 plt.show()
