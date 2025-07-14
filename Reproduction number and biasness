@@ -1,10 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Actual R0 values
-actual_r0 = [0.9999,1.0229,1.0446,1.0786,1.2189, 1.5,2.1,2.5]
 
-# Process data (mean and confidence intervals)
+actual_r0 = [0.9999,1.0229,1.0446,1.0786,1.2189, 1.5,2.1,2.5]
 data = {
     "EG": ([0.8712, 1.0602, 0.9486, 0.8420, 0.9888, 0.9844, 0.9751, 1.0975],
             [0.771, 0.960, 0.849, 0.742, 0.888, 0.884, 0.8751, 0.997],
@@ -23,29 +21,21 @@ data = {
                 [0.914, 1.199, 1.021, 0.877, 1.082, 1.075, 1.061, 1.265], 'purple')
 }
 
-# Generate individual plots
 for method, (means, lower, upper, color) in data.items():
     plt.figure(figsize=(6, 4))
     plt.plot(actual_r0, actual_r0, '--', label='Actual $R_t$', color='black', linewidth=2)
     plt.errorbar(actual_r0, means, yerr=[np.array(means) - np.array(lower), np.array(upper) - np.array(means)],
                  fmt='o', label=method, color=color, capsize=8, linestyle='-', linewidth=2)
 
-    # Customize plot
     plt.xlabel('Actual $R_t$', fontsize=14)
     plt.ylabel('Simulated $R_t$', fontsize=14)
     plt.ylim(0, 3)
-    #plt.ylim(0, 5.5)
-    #plt.title(f'Actual $R_0$ vs. {method} Estimated $R_0$', fontsize=14)
     plt.legend(fontsize=14)
     plt.grid(True, linestyle='--', alpha=1)
     plt.tight_layout()
-
-    # Add a box around the figure
     ax = plt.gca()
     for spine in ax.spines.values():
         spine.set_linewidth(2)
-
-    # Show plot
     plt.show()
 
 ################################################################################
@@ -53,10 +43,8 @@ for method, (means, lower, upper, color) in data.items():
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Ensure a white background
-plt.style.use('default')  # Reset any dark mode settings
 
-# Data for plotting
+plt.style.use('default') 
 actual_r0 = [0.9999, 1.0229, 1.0446, 1.0786, 1.2189,1.5000,2.1000,2.5000 ]
 eg = [0.0166, 0.0015, 0.0093, 0.0560, 0.0530, 0.2658, 1.2654, 1.9670]
 ml = [1.1326, 0.9457, 0.9829, 1.0336, 0.6642, 0.7852, 0.9530, 1.6951]
@@ -64,18 +52,15 @@ sb = [2.2022, 2.1964, 2.1718, 2.1498, 2.0467, 1.8508, 1.4823, 1.2829]
 td = [0.0125, 0.0130, 0.0129, 0.0130, 0.0135, 0.0158, 0.0209, 0.0257]
 gamma_gt = [0.0344, 0.0060, 0.0152, 0.0910, 0.0560, 0.2749, 1.2964, 1.7817]
 
-# Create figure with white background
 fig, ax = plt.subplots(figsize=(6, 4), facecolor='white')
 ax.set_facecolor('white')  # Ensure the plot area is white
 
-# Plot settings
 ax.plot(actual_r0, eg, label='EG', marker='d', linestyle='-', linewidth=2.2,markersize=9)
 ax.plot(actual_r0, ml, label='ML', marker='d', linestyle='-', linewidth=2.2,markersize=9)
 ax.plot(actual_r0, sb, label='SB', marker='d', linestyle='-', linewidth=2.2,markersize=9)
 ax.plot(actual_r0, td, label='TD', marker='d', linestyle='-', linewidth=2.2,markersize=9)
 ax.plot(actual_r0, gamma_gt, label='G-D GT', marker='d', linestyle='--', linewidth=2.2,markersize=9)
 
-# Customize plot
 ax.set_xlabel('Actual $R_0/R_t$', fontsize=14)
 ax.set_ylabel('MSE values', fontsize=14)
 plt.ylim(-0.2, 3.2)
@@ -83,17 +68,10 @@ ax.set_title('', fontsize=14)
 ax.grid(True, linestyle='--', alpha=0.6)  # Keep grid visible
 ax.legend(fontsize=14)
 plt.tight_layout()
-
-# Add a legend with a box
 legend = plt.legend(loc='upper left',ncol=2, fontsize=10, frameon=True)
 legend.get_frame().set_edgecolor('black')  # Add border color to legend box
 legend.get_frame().set_linewidth(2)  # Make legend box border thicker
-
-
-# Add a box around the figure
 ax = plt.gca()  # Get current axis
 for spine in ax.spines.values():
     spine.set_linewidth(2)  # Adjust border thickness
-
-# Display the plot
 plt.show()
