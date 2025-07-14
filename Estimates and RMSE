@@ -1,5 +1,79 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.patches as mpatches
+
+params_figure1 = [r"$\beta_0$", r"$\gamma$", r"$\mu$", r"$\sigma$", r"$\varphi^{-1}$"]
+medians_figure1 = [0.2996, 0.1431, 0.4997, 0.1997, 0.1705]
+lower_50_figure1 = [0.2929, 0.1296, 0.4866, 0.1928, 0.1497]
+upper_50_figure1 = [0.3063, 0.1566, 0.5128, 0.2067, 0.1913]
+lower_90_figure1 = [0.2835, 0.1111, 0.4678, 0.1834, 0.1261]
+upper_90_figure1 = [0.3164, 0.1758, 0.5317, 0.2164, 0.2290]
+R_hat1 = [1.0002, 1.0006, 1.0004, 1.0002, 1.0019]
+box_colors1 = ['green', 'purple', 'hotpink', 'cyan', 'orange']
+median_colors1 = ['red' if r <= 1.05 else 'yellow' if r <= 1.1 else 'green' for r in R_hat1]
+
+params_figure2 = [r"$\beta_1$", r"$\eta$", r"$\phi$"]
+medians_figure2 = [1.0003, 49.9862, 5.9681]
+lower_50_figure2 = [0.8585, 46.5833, 5.2355]
+upper_50_figure2 = [1.1421, 53.3891, 6.7007]
+lower_90_figure2 = [0.6678, 41.4176, 4.3018]
+upper_90_figure2 = [1.3289, 58.2504, 7.9035]
+R_hat2 = [1.0003, 1.0002, 1.0019]
+box_colors2 = ['purple', 'cyan', 'orange']
+median_colors2 = ['red' if r <= 1.05 else 'yellow' if r <= 1.1 else 'green' for r in R_hat2]
+
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(6, 4))
+for i in range(len(params_figure1)):
+    ax1.plot([lower_90_figure1[i], upper_90_figure1[i]], [i, i], color='black', lw=2)
+    ax1.plot([lower_90_figure1[i], lower_90_figure1[i]], [i - 0.1, i + 0.1], color='blue', lw=2)
+    ax1.plot([upper_90_figure1[i], upper_90_figure1[i]], [i - 0.1, i + 0.1], color='blue', lw=2)
+    ax1.add_patch(mpatches.Rectangle((lower_50_figure1[i], i - 0.3),
+                                     upper_50_figure1[i] - lower_50_figure1[i], 0.6,
+                                     edgecolor='black', facecolor=box_colors1[i], alpha=0.7))
+    ax1.add_patch(mpatches.Rectangle((medians_figure1[i] - 0.005, i - 0.3),
+                                     0.003, 0.6, edgecolor='black',
+                                     facecolor=median_colors1[i], alpha=0.9))
+ax1.set_yticks(range(len(params_figure1)))
+ax1.set_yticklabels(params_figure1, fontsize=12)
+ax1.set_xlim(0.1, 0.6)
+ax1.grid(True, axis='x', linestyle='--', alpha=0.7)
+ax1.grid(True, axis='y', linestyle='--', alpha=0.7)
+
+for i in range(len(params_figure2)):
+    ax2.plot([lower_90_figure2[i], upper_90_figure2[i]], [i, i], color='black', lw=2)
+    ax2.plot([lower_90_figure2[i], lower_90_figure2[i]], [i - 0.1, i + 0.1], color='blue', lw=2)
+    ax2.plot([upper_90_figure2[i], upper_90_figure2[i]], [i - 0.1, i + 0.1], color='blue', lw=2)
+    ax2.add_patch(mpatches.Rectangle((lower_50_figure2[i], i - 0.3),
+                                     upper_50_figure2[i] - lower_50_figure2[i], 0.6,
+                                     edgecolor='black', facecolor=box_colors2[i], alpha=0.7))
+    ax2.add_patch(mpatches.Rectangle((medians_figure2[i] - 0.005, i - 0.3),
+                                     0.5, 0.6, edgecolor='black',
+                                     facecolor=median_colors2[i], alpha=0.9))
+ax2.set_yticks(range(len(params_figure2)))
+ax2.set_yticklabels(params_figure2, fontsize=12)
+ax2.grid(True, axis='x', linestyle='--', alpha=1)
+ax2.grid(True, axis='y', linestyle='--', alpha=1)
+
+legend_patches = [
+    mpatches.Patch(color='red', label=r'$\hat{R} \leq 1.05$'),
+    mpatches.Patch(color='yellow', label=r'$1.05 < \hat{R} \leq 1.1$'),
+    mpatches.Patch(color='green', label=r'$\hat{R} > 1.1$')
+]
+
+ax1.legend(handles=legend_patches, ncol=3, loc='upper center', bbox_to_anchor=(0.5, 1.35), fontsize=12)
+for spine in ax1.spines.values():
+    spine.set_edgecolor('black')
+    spine.set_linewidth(2)
+
+for spine in ax2.spines.values():
+    spine.set_edgecolor('black')
+    spine.set_linewidth(2)
+plt.tight_layout()
+plt.show()
+
+#############################################
+import matplotlib.pyplot as plt
+import numpy as np
 
 methods = ['EG', 'ML', 'SB', 'TD']
 rmse_values = [556.1581, 484.98, 11115.75, 462.89]
