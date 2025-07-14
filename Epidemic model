@@ -1,0 +1,47 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.integrate import solve_ivp
+
+# SEIR Model 
+def seir_model(t, y, beta1, beta0, mu, eta, gamma, sigma, N):
+    S, E, I, R = y
+    beta_t = beta1 + (beta0 - beta1) * (1 - np.exp(-mu * (t - eta)))
+    if t < eta:
+        beta_t = beta1
+
+    dSdt = - (beta_t * S * I) / N
+    dEdt = (beta_t * S * I) / N - sigma * E
+    dIdt = sigma * E - gamma * I
+    dRdt = gamma * I
+
+    return [dSdt, dEdt, dIdt, dRdt]
+N = 100099
+I0 = 1
+E0 = 100
+R0 = 0
+S0 = N - I0 - E0 - R0
+t_span = np.linspace(0, 200, 201)
+
+eta_values = np.arange(10, 50, 20)   
+mu_values = np.arange(0.001, 1.0, 0.1)  
+
+peak_infected = np.zeros((len(mu_values), len(eta_values)))
+
+for i, mu in enumerate(mu_values):
+    for j, eta in enumerate(eta_values):
+        sol = solve_ivp(seir_model, [t_span[0], t_span[-1]], [S0, E0, I0, R0],
+                        args=(1, 0.3, mu, eta, 0.1429, 0.2, N), t_eval=t_span)
+        peak_infected[i, j] = np.max(sol.y[2])
+
+plt.figure(figsize=(6, 4))
+eta_grid, mu_grid = np.meshgrid(eta_values, mu_values)
+contour = plt.contourf(eta_grid, mu_grid, peak_infected, cmap='turbo')
+plt.colorbar(contour, label='')
+
+plt.xlabel("η", fontsize=12, fontweight='bold')
+plt.ylabel("μ", fontsize=12, fontweight='bold')
+plt.title(" Infected vs η and μ", fontsize=14, fontweight='bold')
+#plt.grid(True)
+plt.tight_layout()
+plt.show()
