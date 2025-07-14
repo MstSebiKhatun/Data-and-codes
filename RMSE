@@ -1,43 +1,24 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Example RMSE values for each method
 methods = ['EG', 'ML', 'SB', 'TD']
 rmse_values = [556.1581, 484.98, 11115.75, 462.89]
-
-# Convert methods to numerical indices for plotting
 x_positions = np.arange(len(methods))
-
-# Create the figure
 plt.figure(figsize=(6, 4))
-
-# Add gridlines in the background (set zorder low)
 plt.grid(True, linestyle='--', alpha=1, zorder=0)
 
-# Plot RMSE values as a bar diagram with thinner bars (set zorder high)
+
 bars = plt.bar(x_positions, rmse_values, color=['blue', 'green', 'red', 'black'],
                width=0.4, edgecolor='black', zorder=3)
-
-# Set x-axis tick labels to method names
 plt.xticks(x_positions, methods, fontsize=14)
-
-# Labels and title
 plt.ylabel('RMSE', fontsize=14)
-
-# Add a legend
 legend = plt.legend(bars, rmse_values, loc='upper left', fontsize=14, frameon=True)
 legend.get_frame().set_edgecolor('black')  # Add border color to legend box
 legend.get_frame().set_linewidth(2)  # Make legend box border thicker
-
-# Add a box around the figure
 ax = plt.gca()  # Get current axis
 for spine in ax.spines.values():
     spine.set_linewidth(2)  # Adjust border thickness
-
-# Adjust plot margins for better spacing
 plt.tight_layout()
-
-# Show the plot
 plt.show()
 
 ############################################################
@@ -56,67 +37,48 @@ test_percentages = [60, 43, 34, 25, 19]  # Test data percentages
 RMSE_values = [4059.3968, 2639.1781, 1151.2961, 198.61, 72.5816]  # RMSE values
 MAE_values = [2357.0076, 1526.7026, 765.556, 126.1563, 65.2117]  # MAE values
 MAPE_values = [83.42, 62.82, 59.8637, 51.13, 30.42]  # MAPE values (in percentage)
-# -------------------- Define Colors for Each Test Percentage --------------------
 color_sets = [['#1f77b4', '#ff7f0e', '#2ca02c'],  # 55% Test Data
               ['#d62728', '#9467bd', '#8c564b'],  # 38% Test Data
               ['#e377c2', '#7f7f7f', '#bcbd22'],  # 25% Test Data
               ['#17becf', '#aec7e8', '#ffbb78'],  # 19% Test Data
               ['#98df8a', '#c5b0d5', '#f7b6d2']]  # 4% Test Data
 
-# -------------------- Create Bar Plot --------------------
 x = np.arange(len(test_percentages))  # X-axis positions
 width = 0.2  # Bar width
 
 fig, ax = plt.subplots(figsize=(8, 5))
-
-bars = []  # Store bars for legend mapping
+bars = [] 
 for i in range(len(test_percentages)):
     bars.append(ax.bar(x[i] - width, RMSE_values[i], width, color=color_sets[i][0], zorder=3))  # RMSE first
     bars.append(ax.bar(x[i], MAE_values[i], width, color=color_sets[i][1], zorder=3))  # MAE second
     bars.append(ax.bar(x[i] + width, MAPE_values[i], width, color=color_sets[i][2], zorder=3))  # MAPE third
 
-# -------------------- Formatting --------------------
-#ax.set_xlabel('Test data percentage (%)', fontsize=12)
+ax.set_xlabel('Test data percentage (%)', fontsize=12)
 ax.set_ylabel('Values', fontsize=12)
-#ax.set_title('Values of RMSE, MAE, and MAPE for different test data', fontsize=14)
+ax.set_title('Values of RMSE, MAE, and MAPE for different test data', fontsize=14)
 ax.set_xticks(x)
 ax.set_xticklabels([f"{p}%" for p in test_percentages], fontsize=11)
 ax.grid(axis='y', linestyle='--', alpha=0.7, zorder=0)  # Grid behind bars
-
-# Add box around the figure
 for spine in ax.spines.values():
     spine.set_edgecolor('black')
     spine.set_linewidth(2)
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-
-# -------------------- Create Legends with Box Edges --------------------
 def create_legend(test_idx, title, loc, font_size=10):
     patches = [
         mpatches.Patch(color=color_sets[test_idx][0], label=f'RMSE: {RMSE_values[test_idx]:.2f}'),
         mpatches.Patch(color=color_sets[test_idx][1], label=f'MAE: {MAE_values[test_idx]:.2f}'),
         mpatches.Patch(color=color_sets[test_idx][2], label=f'MAPE: {MAPE_values[test_idx]:.2f}')
     ]
-
-    # Create the legend with specified location and font size
     legend = fig.legend(handles=patches, title=f'Test data: {title}', loc='upper left', bbox_to_anchor=loc, fontsize=font_size, frameon=True)
-
-    # Add box edges to the legend
     legend.get_frame().set_edgecolor('black')
     legend.get_frame().set_linewidth(2)
-
-# -------------------- Positioning Legends Using Figure Coordinates --------------------
 create_legend(0, "60%", (0.28, 0.9), font_size=10)
 create_legend(1, "43%", (0.5, 0.9), font_size=10)
 create_legend(2, "34%", (0.72, 0.9), font_size=10)
 create_legend(3, "25%", (0.44, 0.7), font_size=10)
 create_legend(4, "19%", (0.65, 0.7), font_size=10)
-
-
-# Adjust layout for better spacing
 plt.tight_layout()
-
-# Show Plot
 plt.show()
 
